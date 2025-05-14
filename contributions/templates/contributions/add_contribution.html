@@ -1,0 +1,336 @@
+{% extends 'members/base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .container {
+            max-width: 600px;
+            margin-top: 50px;
+        }
+        .header {
+            background-color: #003087;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        .form-label {
+            font-weight: bold;
+        }
+        .category-item {
+            margin-bottom: 10px;
+        }
+        .amount-field {
+            display: none;
+            margin-top: 5px;
+            margin-left: 30px;
+        }
+    </style>
+    <div class="container">
+        <div class="header">
+            <h5>Seventh-day Adventist Church</h5>
+            <h1>Online Envelope</h1>
+        </div>
+        <div class="card mt-4 p-4">
+            <h5>Member Details</h5>
+            <div class="row">
+                <div class="col-md-6">
+                    <label class="form-label">First Name</label>
+                    <p>{{ member.first_name }}</p>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Last Name</label>
+                    <p>{{ member.last_name }}</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <label class="form-label">Middle Name</label>
+                    <p>{{ member.middle_name|default:"N/A" }}</p>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Email</label>
+                    <p>{{ member.email_address }}</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <label class="form-label">Phone Number</label>
+                    <p>{{ member.phone_number|default:"N/A" }}</p>
+                </div>
+            </div>
+
+            <hr>
+
+            <form method="post" id="contribution-form" onsubmit="prepareCategories()">
+                {% csrf_token %}
+                <h5>Contribution Details</h5>
+                {{ form|crispy }}
+                
+                <h5 class="mt-4">Categories</h5>
+                <div id="category-list">
+                    <div class="category-item">
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="category-tithe" value="tithe" onchange="toggleAmountField(this)">
+                            <label class="form-check-label" for="category-tithe">Tithe</label>
+                        </div>
+                        <div class="amount-field" id="amount-tithe">
+                            <label for="amount-input-tithe">Amount</label>
+                            <input type="number" step="0.01" class="form-control" id="amount-input-tithe" name="amount-tithe">
+                        </div>
+                    </div>
+                    <div class="category-item">
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="category-aemr" value="aemr" onchange="toggleAmountField(this)">
+                            <label class="form-check-label" for="category-aemr">AEMR</label>
+                        </div>
+                        <div class="amount-field" id="amount-aemr">
+                            <label for="amount-input-aemr">Amount</label>
+                            <input type="number" step="0.01" class="form-control" id="amount-input-aemr" name="amount-aemr">
+                        </div>
+                    </div>
+                    <div class="category-item">
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="category-church_development" value="church_development" onchange="toggleAmountField(this)">
+                            <label class="form-check-label" for="category-church_development">Church Development</label>
+                        </div>
+                        <div class="amount-field" id="amount-church_development">
+                            <label for="amount-input-church_development">Amount</label>
+                            <input type="number" step="0.01" class="form-control" id="amount-input-church_development" name="amount-church_development">
+                        </div>
+                    </div>
+                    <div class="category-item">
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="category-evangelism" value="evangelism" onchange="toggleAmountField(this)">
+                            <label class="form-check-label" for="category-evangelism">Evangelism</label>
+                        </div>
+                        <div class="amount-field" id="amount-evangelism">
+                            <label for="amount-input-evangelism">Amount</label>
+                            <input type="number" step="0.01" class="form-control" id="amount-input-evangelism" name="amount-evangelism">
+                        </div>
+                    </div>
+                    <div class="category-item">
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="category-station_fund" value="station_fund" onchange="toggleAmountField(this)">
+                            <label class="form-check-label" for="category-station_fund">Station Fund</label>
+                        </div>
+                        <div class="amount-field" id="amount-station_fund">
+                            <label for="amount-input-station_fund">Amount</label>
+                            <input type="number" step="0.01" class="form-control" id="amount-input-station_fund" name="amount-station_fund">
+                        </div>
+                    </div>
+                    <div class="category-item">
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="category-welfare" value="welfare" onchange="toggleAmountField(this)">
+                            <label class="form-check-label" for="category-welfare">Welfare</label>
+                        </div>
+                        <div class="amount-field" id="amount-welfare">
+                            <label for="amount-input-welfare">Amount</label>
+                            <input type="number" step="0.01" class="form-control" id="amount-input-welfare" name="amount-welfare">
+                        </div>
+                    </div>
+                    <div class="category-item">
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="category-masamaria_mwema" value="masamaria_mwema" onchange="toggleAmountField(this)">
+                            <label class="form-check-label" for="category-masamaria_mwema">Masamaria Mwema</label>
+                        </div>
+                        <div class="amount-field" id="amount-masamaria_mwema">
+                            <label for="amount-input-masamaria_mwema">Amount</label>
+                            <input type="number" step="0.01" class="form-control" id="amount-input-masamaria_mwema" name="amount-masamaria_mwema">
+                        </div>
+                    </div>
+                    <div class="category-item">
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="category-camp_meeting_offering" value="camp_meeting_offering" onchange="toggleAmountField(this)">
+                            <label class="form-check-label" for="category-camp_meeting_offering">Camp Meeting - Offering</label>
+                        </div>
+                        <div class="amount-field" id="amount-camp_meeting_offering">
+                            <label for="amount-input-camp_meeting_offering">Amount</label>
+                            <input type="number" step="0.01" class="form-control" id="amount-input-camp_meeting_offering" name="amount-camp_meeting_offering">
+                        </div>
+                    </div>
+                    <div class="category-item">
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="category-camp_meeting_expenses" value="camp_meeting_expenses" onchange="toggleAmountField(this)">
+                            <label class="form-check-label" for="category-camp_meeting_expenses">Camp Meeting - Expenses</label>
+                        </div>
+                        <div class="amount-field" id="amount-camp_meeting_expenses">
+                            <label for="amount-input-camp_meeting_expenses">Amount</label>
+                            <input type="number" step="0.01" class="form-control" id="amount-input-camp_meeting_expenses" name="amount-camp_meeting_expenses">
+                        </div>
+                    </div>
+                    <div class="category-item">
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="category-lunch" value="lunch" onchange="toggleAmountField(this)">
+                            <label class="form-check-label" for="category-lunch">Lunch</label>
+                        </div>
+                        <div class="amount-field" id="amount-lunch">
+                            <label for="amount-input-lunch">Amount</label>
+                            <input type="number" step="0.01" class="form-control" id="amount-input-lunch" name="amount-lunch">
+                        </div>
+                    </div>
+                    <div class="category-item">
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="category-youth_kitty" value="youth_kitty" onchange="toggleAmountField(this)">
+                            <label class="form-check-label" for="category-youth_kitty">Youth Kitty</label>
+                        </div>
+                        <div class="amount-field" id="amount-youth_kitty">
+                            <label for="amount-input-youth_kitty">Amount</label>
+                            <input type="number" step="0.01" class="form-control" id="amount-input-youth_kitty" name="amount-youth_kitty">
+                        </div>
+                    </div>
+                    <div class="category-item">
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="category-choir_kitty" value="choir_kitty" onchange="toggleAmountField(this)">
+                            <label class="form-check-label" for="category-choir_kitty">Choir Kitty</label>
+                        </div>
+                        <div class="amount-field" id="amount-choir_kitty">
+                            <label for="amount-input-choir_kitty">Amount</label>
+                            <input type="number" step="0.01" class="form-control" id="amount-input-choir_kitty" name="amount-choir_kitty">
+                        </div>
+                    </div>
+                    <div class="category-item">
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="category-thanksgiving" value="thanksgiving" onchange="toggleAmountField(this)">
+                            <label class="form-check-label" for="category-thanksgiving">Thanksgiving</label>
+                        </div>
+                        <div class="amount-field" id="amount-thanksgiving">
+                            <label for="amount-input-thanksgiving">Amount</label>
+                            <input type="number" step="0.01" class="form-control" id="amount-input-thanksgiving" name="amount-thanksgiving">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-3">
+                    <button type="submit" class="btn btn-primary">Submit Record</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Run toggleReferenceCode on page load to set initial state
+        // document.addEventListener('DOMContentLoaded', function() {
+        //     console.log("DOM fully loaded");
+        //     var modeElement = document.getElementById('id_mode_of_payment');
+        //     var refDiv = document.getElementById('div_id_reference_code');
+        //     console.log("Mode Element:", modeElement);
+        //     console.log("Reference Div:", refDiv);
+        //     toggleReferenceCode();
+        // });
+
+        // function toggleReferenceCode() {
+        //     var modeElement = document.getElementById('id_mode_of_payment');
+        //     var refDiv = document.getElementById('div_id_reference_code');
+        //     if (!modeElement) {
+        //         console.error("Mode of payment element not found!");
+        //         return;
+        //     }
+        //     if (!refDiv) {
+        //         console.error("Reference code div not found!");
+        //         return;
+        //     }
+        //     var mode = modeElement.value;
+        //     console.log("Selected mode:", mode);
+        //     refDiv.style.display = (mode === 'cash') ? 'none' : 'block';
+        // }
+
+    //     document.addEventListener('DOMContentLoaded', function() {
+    //     console.log("DOM fully loaded");
+
+    //     var modeElement = document.getElementById('id_mode_of_payment');
+    //     var refDiv = document.getElementById('div_id_reference_code');
+
+    //     if (!modeElement) {
+    //         console.error("Mode of payment element not found!");
+    //         return;
+    //     }
+    //     if (!refDiv) {
+    //         console.error("Reference code div not found!");
+    //         return;
+    //     }
+
+    //     // Initial check when page loads
+    //     toggleReferenceCode();
+
+    //     // Attach event listener for changes
+    //     modeElement.addEventListener("change", toggleReferenceCode);
+    // });
+
+    // function toggleReferenceCode() {
+    //     var modeElement = document.getElementById('id_mode_of_payment');
+    //     var refDiv = document.getElementById('div_id_reference_code');
+
+    //     if (!modeElement || !refDiv) return;
+
+    //     var mode = modeElement.value;
+    //     console.log("Selected mode:", mode);
+
+    //     // Hide reference code field if "cash" is selected
+    //     if (mode === 'cash') {
+    //         refDiv.style.display = 'none';
+    //         document.getElementById('id_reference_code').value = ''; // Clear the value
+    //     } else {
+    //         refDiv.style.display = 'block';
+    //     }
+    // }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        console.log("DOM fully loaded");
+
+        var modeElement = document.getElementById('id_mode_of_payment');
+
+        if (!modeElement) {
+            console.error("Mode of payment element not found!");
+            return;
+        }
+
+        // Attach event listener to detect changes
+        modeElement.addEventListener("change", toggleReferenceCode);
+
+        // Ensure it runs once after DOM loads
+        toggleReferenceCode();
+    });
+
+    function toggleReferenceCode() {
+        var modeElement = document.getElementById('id_mode_of_payment');
+        var refDiv = document.getElementById('div_id_reference_code');
+        var refInput = document.getElementById('id_reference_code');
+
+        if (!modeElement || !refDiv) return;
+
+        var mode = modeElement.value;
+        console.log("Selected mode:", mode);
+
+        if (mode === 'cash') {
+            refDiv.style.display = 'none';
+            if (refInput) refInput.value = ''; // Clear the value to prevent accidental submission
+        } else {
+            refDiv.style.display = 'block';
+        }
+    }
+
+        function toggleAmountField(checkbox) {
+            var amountField = document.getElementById('amount-' + checkbox.value);
+            amountField.style.display = checkbox.checked ? 'block' : 'none';
+            if (!checkbox.checked) {
+                document.getElementById('amount-input-' + checkbox.value).value = '';
+            }
+        }
+
+        function prepareCategories() {
+            var categories = {};
+            var categoryList = document.querySelectorAll('#category-list .category-item');
+            categoryList.forEach(function(item) {
+                var checkbox = item.querySelector('input[type="checkbox"]');
+                var amountInput = item.querySelector('input[type="number"]');
+                if (checkbox.checked && amountInput.value) {
+                    categories[checkbox.value] = parseFloat(amountInput.value);
+                }
+            });
+            document.getElementById('id_categories_json').value = JSON.stringify(categories);
+        }
+    </script>
+{% endblock content %}

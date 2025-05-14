@@ -1,0 +1,32 @@
+{% extends 'members/base.html' %}
+{% block content %}
+
+    <div class="container mt-5">
+        <h2 class="text-center">Member Details</h2>
+        <div class="table-responsive">
+            <table class="table table-secondary table-striped table-hover table-bordered">
+                <thead class="text-center">
+                    <tr>
+                        <th>#</th>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Other Names</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>{{ object.id}}</td>
+                        <td>
+                            <a href="{% url 'individual_member_more' pk=user.members.pk %}" data-bs-toggle="tooltip" data-bs-placement="top" title="Click to view more details">
+                                {{ object.first_name }}
+                            </a>
+                        </td>
+                        <td>{{ object.last_name }}</td>
+                        <td>{{ object.middle_name }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+{% endblock content %}

@@ -1,0 +1,98 @@
+{% extends 'members/base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+    {% if form.errors %}
+        <div class="alert alert-danger">
+            <ul>
+                {% for field, errors in form.errors.items %}
+                    {% for error in errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+
+<form method="POST" action="">
+    {% csrf_token %}
+
+    <!-- Father Unique ID Input -->
+    <div class="mb-3">
+        <label for="father_unique_id">Father Unique ID:</label>
+        <input type="text" id="father_unique_id" name="father_id" class="form-control">
+        <button type="button" id="fetch_father" class="btn btn-secondary mt-2">Check</button>
+        <p id="father_name" class="text-info mt-1"></p>
+        <p id="father_error" class="text-danger mt-1"></p> <!-- Error message -->
+        <input type="hidden" id="father_pk" name="father">
+    </div>
+
+    <!-- Mother Unique ID Input -->
+    <div class="mb-3">
+        <label for="mother_unique_id">Mother Unique ID:</label>
+        <input type="text" id="mother_unique_id" name="mother_id" class="form-control">
+        <button type="button" id="fetch_mother" class="btn btn-secondary mt-2">Check</button>
+        <p id="mother_name" class="text-info mt-1"></p>
+        <p id="mother_error" class="text-danger mt-1"></p> <!-- Error message -->
+        <input type="hidden" id="mother_pk" name="mother">
+    </div>
+
+    <!-- Render remaining fields excluding unique IDs -->
+    {% for field in form %}
+        {% if field.name not in "father mother father_id mother_id" %}
+            {{ field|as_crispy_field }}
+        {% endif %}
+    {% endfor %}
+
+    <button type="submit" class="btn btn-primary w-100">Submit</button>
+</form>
+
+<script>
+    document.getElementById('fetch_father').addEventListener('click', function() {
+        let fatherID = document.getElementById('father_unique_id').value;
+        fetch("{% url 'validate_parent' unique_id=12345 %}".replace("12345", fatherID))  
+            .then(response => response.json())
+            .then(data => {
+                let fatherName = document.getElementById('father_name');
+                let fatherError = document.getElementById('father_error');
+
+                if (data.exists) {
+                    if (data.gender === "Male") {
+                        fatherName.textContent = `Father: ${data.name}`;
+                        fatherError.textContent = "";  // Clear error if valid
+                    } else {
+                        fatherName.textContent = "";
+                        fatherError.textContent = "The provided Father ID must belong to a male member.";
+                    }
+                } else {
+                    fatherName.textContent = "";
+                    fatherError.textContent = "Father not found.";
+                }
+            });
+    });
+
+    document.getElementById('fetch_mother').addEventListener('click', function() {
+        let motherID = document.getElementById('mother_unique_id').value;
+        fetch("{% url 'validate_parent' unique_id=12345 %}".replace("12345", motherID))  
+            .then(response => response.json())
+            .then(data => {
+                let motherName = document.getElementById('mother_name');
+                let motherError = document.getElementById('mother_error');
+
+                if (data.exists) {
+                    if (data.gender === "Female") {
+                        motherName.textContent = `Mother: ${data.name}`;
+                        motherError.textContent = "";  // Clear error if valid
+                    } else {
+                        motherName.textContent = "";
+                        motherError.textContent = "The provided Mother ID must belong to a female member.";
+                    }
+                } else {
+                    motherName.textContent = "";
+                    motherError.textContent = "Mother not found.";
+                }
+            });
+    });
+</script>
+
+{% endblock content %}

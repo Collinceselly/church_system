@@ -1,0 +1,95 @@
+{% extends 'members/base.html' %}
+{% block content %}
+
+    <div class="container-fluid mt-5">
+        <!-- <a href="{% url 'member_create' %}" data-bs-toggle="tooltip" data-bs-placement="top" title="Add a member">
+            <i class="bi bi-person-plus-fill" style="font-size: 2rem; text-align: right;"></i>
+        </a> -->
+        <h2 class="text-center">All contributions records</h2>
+        <!-- <a href="{% url 'members_all' %}" data-bs-toggle="tooltip" data-bs-placement="top" title="Back to members list"> <i class="bi bi-skip-backward" style="font-size: 2rem;"></i></a> -->
+        <form method="GET" action="" class="d-flex mb-4">
+            <input type="text" name="q" class="form-control me-2" placeholder="Search by First Name or Unique ID" value="{{ query }}">
+            <button class="btn btn-primary" type="submit">Search</button>
+        </form>
+        
+        <div class="table-responsive">
+            <table class="table table-secondary table-striped table-hover table-bordered w-100">
+                <thead class="text-center">
+                    <tr>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Sabbath Date</th>
+                        <th>Mode of Payment</th>
+                        <th>Reference Code</th>
+                        <th>Tithe</th>
+                        <th>AEMR</th>
+                        <th>Church Development</th>
+                        <th>Evangelism</th>
+                        <th>Station Fund</th>
+                        <th>Welfare</th>
+                        <th>Masamaria Mwema</th>
+                        <th>Camp Meeting - Offering</th>
+                        <th>Camp Meeting - Expenses</th>
+                        <th>Lunch</th>
+                        <th>Youth Kitty</th>
+                        <th>Choir Kitty</th>
+                        <th>Thanksgiving</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for contribution in page_obj %}
+                        <tr>
+                            <td>{{ contribution.member.first_name }}</td>
+                            <td>{{ contribution.member.last_name }}</td>
+                            <td>{{ contribution.date }}</td>
+                            <td>{{ contribution.mode_of_payment }}</td>
+                            <td>{{ contribution.reference_code|default:"N/A" }}</td>
+                            <td>{{ contribution.categories.tithe|default:"" }}</td>
+                            <td>{{ contribution.categories.aemr|default:"" }}</td>
+                            <td>{{ contribution.categories.church_development|default:"" }}</td>
+                            <td>{{ contribution.categories.evangelism|default:"" }}</td>
+                            <td>{{ contribution.categories.station_fund|default:"" }}</td>
+                            <td>{{ contribution.categories.welfare|default:"" }}</td>
+                            <td>{{ contribution.categories.masamaria_mwema|default:"" }}</td>
+                            <td>{{ contribution.categories.camp_meeting_offering|default:"" }}</td>
+                            <td>{{ contribution.categories.camp_meeting_expenses|default:"" }}</td>
+                            <td>{{ contribution.categories.lunch|default:"" }}</td>
+                            <td>{{ contribution.categories.youth_kitty|default:"" }}</td>
+                            <td>{{ contribution.categories.choir_kitty|default:"" }}</td>
+                            <td>{{ contribution.categories.thanksgiving|default:"" }}</td>
+                        </tr>
+                    {% empty %}
+                        <tr><td colspan="16">No contributions found.</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div style="text-align: center;">
+            {% if page_obj %}
+
+            {% if page_obj.has_previous %}
+                <a class="btn btn-outline-info mb-4" href="?page=1">First</a>
+                <a class="btn btn-outline-info mb-4" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+            {% endif %}
+
+            {% for num in page_obj.paginator.page_range %}
+
+                {% if page_obj.number == num %}
+                <a class="btn btn-info mb-4" href="?page={{ num }}">{{ num }}</a>
+                {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                <a class="btn btn-outline-info mb-4" href="?page={{ num }}">{{ num }}</a>
+                {% endif %}
+
+            {% endfor %}
+
+            {% if page_obj.has_next %}
+                <a class="btn btn-outline-info mb-4" href="?page={{ page_obj.next_page_number }}">Next</a>
+                <a class="btn btn-outline-info mb-4" href="?page={{ page_obj.paginator.num_pages }}">Last</a>
+            {% endif %}
+
+            {% endif %}
+        </div>
+    </div>
+
+{% endblock content %}

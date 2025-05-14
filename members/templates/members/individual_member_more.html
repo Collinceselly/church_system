@@ -1,0 +1,118 @@
+{% extends 'members/base.html' %}
+{% block content %}
+
+        <div class="container mt-5">
+            <h2 class="text-center">Member Details</h2>
+            <a href="{% url 'individual_contributions' members.pk %}" data-bs-toggle="tooltip" data-bs-placement="top" title="View contributions"> <i class="bi bi-eye" style="font-size: 2rem;"></i></a>
+            <div class="table-responsive">
+                <table class="table table-secondary table-striped table-hover table-bordered">
+                    <thead class="text-center">
+                        <tr>
+                            <th>#</th>
+                            <th>Unique Identifier</th>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>Other Names</th>
+                            <th>Gender</th>
+                            <th>Phone Number</th>
+                            <th>Email Address</th>
+                            <th>Marital Status</th>
+                            <th>Membership By</th>
+                            <th>Occupation</th>
+                            <th>Residential Address</th>
+                        </tr>
+                    </thead>
+                    
+                    <tbody>
+                        <tr>
+                            <td>{{ object.id}}</td>
+                            <td>{{ object.unique_id }}</td>
+                            <td>{{ object.first_name }}</td>
+                            <td>{{ object.last_name }}</td>
+                            <td>{{ object.middle_name }}</td>
+                            <td>{{ object.gender }}</td>
+                            <td>{{ object.phone_number }}</td>
+                            <td>{{ object.email_address }}</td>
+                            <td>{{ object.marital_status }}</td>
+                            <td>{{ object.membership_by }}</td>
+                            <td>{{ object.occupation }}</td>
+                            <td>{{ object.residence_address }}</td>
+                        </tr>
+                    </tbody>
+                    
+                </table>
+                
+            </div>
+        
+
+            {% if children_as_father %}
+                <div class="row mt-5">
+                    <div class="col-12">
+                        <h2 class="text-center">Children Records</h2>
+                        <div class="table-responsive">
+                            <table class="table table-secondary table-striped table-hover table-bordered">
+                                <thead class="text-center">
+                                    <tr>
+                                        <th>First Name</th>
+                                        <th>Middle Name</th>
+                                        <th>Date of Birth</th>
+                                        <th>Gender</th>
+                                        <th>Mother</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    {% for child in children_as_father %}
+                                        <tr>
+                                            <td>{{ child.first_name }}</td>
+                                            <td>{{ child.middle_name }}</td>
+                                            <td>{{ child.date_of_birth }}</td>
+                                            <td>{{ child.gender }}</td>
+                                            <td>{{ child.mother.first_name }} {{ child.mother.last_name }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+            {% endif %}
+
+
+            {% if children_as_mother %}
+                <div class="row mt-5">
+                    <div class="col-12">
+                        <h2 class="text-center">Children Records</h2>
+                        <div class="table-responsive">
+                            <table class="table table-secondary table-striped table-hover table-bordered">
+                                <thead class="text-center">
+                                    <tr>
+                                        <th>First Name</th>
+                                        <th>Middle Name</th>
+                                        <th>Date of Birth</th>
+                                        <th>Gender</th>
+                                        <th>Father</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    {% for child in children_as_mother %}
+                                        <tr>
+                                            <td>{{ child.first_name }}</td>
+                                            <td>{{ child.middle_name }}</td>
+                                            <td>{{ child.date_of_birth }}</td>
+                                            <td>{{ child.gender }}</td>
+                                            <td>{{ child.father.first_name }} {{ child.father.last_name }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+            {% endif %}
+        </div>
+
+{% endblock content %}

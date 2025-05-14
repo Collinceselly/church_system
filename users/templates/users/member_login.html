@@ -1,0 +1,36 @@
+{% extends 'members/base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <!-- Form Card -->
+                <div class="card shadow">
+                    <div class="card-body">
+                        <h3 class="card-title text-center border-bottom pb-3">Member Login</h3>
+                        <div class="border-top pt-3 text-center"> 
+                            <small class="text-muted">
+                                Use your Unique ID as the username and the password you set.
+                            </small>
+                        </div>
+                        <form method="POST" action="">
+                            {% csrf_token %}
+                            <fieldset class="form-group">
+                                {{ form|crispy }}
+                            </fieldset>
+                            <div class="form-group text-center">
+                                <button class="btn btn-primary w-100" type="submit">Login</button>
+                            </div>
+                        </form>
+                        <div class="border-top pt-3 text-center"> 
+                            <small class="text-muted">
+                                Having unique ID but no account <a class="ml-2" href="{% url 'register_member' %}">Sign Up Now</a>
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

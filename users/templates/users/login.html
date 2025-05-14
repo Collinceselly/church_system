@@ -1,0 +1,31 @@
+{% extends 'members/base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <!-- Form Card -->
+                <div class="card shadow">
+                    <div class="card-body">
+                        <h3 class="card-title text-center border-bottom pb-3">User Login</h3>
+                        <form method="POST" action="{% url 'user_login' %}">
+                            {% csrf_token %}
+                            <fieldset class="form-group">
+                                {{ form|crispy }}
+                            </fieldset>
+                            <div class="form-group text-center">
+                                <button class="btn btn-primary w-100" type="submit">Log In</button>
+                            </div>
+                        </form>
+                        <div class="border-top pt-3 text-center"> 
+                            <small class="text-muted">
+                                Need an account <a class="ml-2" href="{% url 'register' %}">Sign Up Now</a>
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

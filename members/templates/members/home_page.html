@@ -1,0 +1,16 @@
+{% extends 'members/base.html' %}
+{% block content %}
+
+
+    <div class="welcome-container">
+        <h1 class="welcome-title">Welcome to the Church Management System</h1>
+        <p class="welcome-text">Please select how you would like to log in:</p>
+        <div class="d-grid gap-3">
+            <!-- <a href="admin-login.html" class="btn btn-login btn-admin text-white">Login as Admin</a> -->
+            <a href="{% url 'user_login' %}" class="btn btn-login btn-staff text-white">Login as Staff</a>
+            <a href="{% url 'member_login' %}" class="btn btn-login btn-members text-white">Login as Member</a>
+        </div>
+    </div>
+
+
+{% endblock content %}

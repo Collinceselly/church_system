@@ -1,0 +1,154 @@
+/*
+**************************************************************************
+Home page section
+**************************************************************************
+*/
+
+html, body {
+    height: 100%; /* Full height for parent elements */
+    margin: 0; /* Remove default margins */
+    padding: 0; /* Remove default padding */
+}
+
+body {
+    background-color: #61778d;
+    display: flex;
+    flex-direction: column; /* Stack children vertically */
+    min-height: 100vh; /* Ensure full viewport height */
+}
+
+.content-wrapper {
+    flex: 1; /* Grow to fill space, pushing footer down */
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+}
+
+.welcome-container {
+    text-align: center;
+    background-color: #ffffff;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 100%; 
+    max-width: 800px;
+}
+
+.welcome-title {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+    color: #343a40;
+}
+
+.welcome-text {
+    font-size: 1.2rem;
+    margin-bottom: 30px;
+    color: #6c757d;
+}
+
+.btn-login {
+    width: 200px;
+    margin: 10px auto;
+    padding: 12px;
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+}
+
+.btn-login:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    color: #fff;
+}
+
+.btn-members:hover {
+    background-color: #218838; /* Darker green on hover */
+    border-color: #1e7e34;
+    color: #fff; /* Keep text white */
+}
+
+.btn-staff:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+    border-color: #004085;
+    color: #fff; /* Keep text white */
+
+}
+.btn-admin {
+    background-color: #dc3545;
+    border-color: #dc3545;
+}
+
+.btn-staff {
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+.btn-members {
+    background-color: #28a745;
+    border-color: #28a745;
+}
+
+footer {
+    width: 100%; /* Ensure full width */
+}
+
+/*
+**************************************************************************
+ End Home page section
+**************************************************************************
+*/
+
+/*
+**************************************************************************
+ Tables 
+**************************************************************************
+*/
+.parent-hover {
+    position: relative;
+    display: inline-block;
+}
+
+.hover-card {
+    display: none;
+    position: absolute;
+    bottom: 20px;  /* Card appears above */
+    left: 0;
+    z-index: 1000;
+    background-color: #fff;
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    width: 220px;
+    font-size: 14px;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+}
+
+/* Hover effect */
+.parent-hover:hover .hover-card {
+    display: block;
+    opacity: 1;
+}
+
+/* Responsive design for smaller screens */
+@media (max-width: 768px) {
+    .hover-card {
+        width: 180px;  /* Smaller width on mobile */
+        font-size: 12px;  /* Smaller font size */
+        bottom: 20px;  /* Adjust card position */
+    }
+}
+
+@media (max-width: 480px) {
+    .hover-card {
+        width: 150px;  /* Even smaller width on very small screens */
+        font-size: 10px;  /* Even smaller font size */
+        bottom: 15px;  /* Adjust further for small screens */
+    }
+}
+
+
+/*
+**************************************************************************
+ End Tables
+**************************************************************************
+*/
